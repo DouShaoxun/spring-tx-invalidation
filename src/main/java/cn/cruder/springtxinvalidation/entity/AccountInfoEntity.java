@@ -4,10 +4,7 @@ import cn.cruder.springtxinvalidation.entity.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Table;
 
@@ -18,6 +15,7 @@ import javax.persistence.Entity;
  * @Author: cruder
  * @Date: 2021/11/29/22:21
  */
+@Builder
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
@@ -31,6 +29,6 @@ public class AccountInfoEntity extends BaseEntity {
 
     @ApiModelProperty(value = "账户金额")
     @Column(columnDefinition = "int(1) COMMENT '账户金额'")
-    private Integer account;
+    private Integer amount;
 
 }

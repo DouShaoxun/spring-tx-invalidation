@@ -33,4 +33,3 @@ spring:
 logging:
   level:
     cn.cruder.springtxinvalidation: debug
-    org.springframework: debug

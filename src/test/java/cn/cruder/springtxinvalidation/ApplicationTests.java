@@ -4,6 +4,7 @@ import cn.cruder.springtxinvalidation.constant.Constant;
 import cn.cruder.springtxinvalidation.entity.AccountInfoEntity;
 import cn.cruder.springtxinvalidation.mapper.AccountInfoMapper;
 import cn.cruder.springtxinvalidation.service.AccountInfoServiceA;
+import cn.cruder.springtxinvalidation.service.AccountInfoServiceB;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -24,7 +25,8 @@ class ApplicationTests {
 
     @Autowired
     private AccountInfoServiceA accountInfoServiceA;
-
+    @Autowired
+    private AccountInfoServiceB accountInfoServiceB;
     @BeforeEach
     public void beforeEach() {
         initAmountValue(Constant.USER_1);
@@ -58,14 +60,39 @@ class ApplicationTests {
     }
 
 
+
+    //------------------------------------------------------------------------------------------------------------------
     @Test
     void testServiceATransferA() throws FileNotFoundException {
+        // commit
         accountInfoServiceA.transferA(Constant.USER_1, Constant.USER_2, 100);
     }
     @Test
     void testServiceATransferB() throws FileNotFoundException {
+        // rollback
         accountInfoServiceA.transferB(Constant.USER_1, Constant.USER_2, 100);
     }
+
+
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    @Test
+    void testServiceBTransferA() throws FileNotFoundException {
+        // commit
+        accountInfoServiceB.transferA(Constant.USER_1, Constant.USER_2, 100);
+    }
+    @Test
+    void testServiceBTransferB() throws FileNotFoundException {
+        // rollback
+        accountInfoServiceB.transferB(Constant.USER_1, Constant.USER_2, 100);
+    }
+    @Test
+    void testServiceBTransferC() throws FileNotFoundException {
+        // rollback
+        accountInfoServiceB.transferC(Constant.USER_1, Constant.USER_2, 100);
+    }
+
 
 
 }

@@ -14,5 +14,9 @@ public interface Constant {
     Long USER_1 = 1L;
     Long USER_2 = 2L;
 
+    /**
+     * 异常临界值
+     */
+    Integer EXCEPTION_CRITICAL_VALUE = 10;
 
 }

@@ -3,7 +3,7 @@ package cn.cruder.springtxinvalidation;
 import cn.cruder.springtxinvalidation.constant.Constant;
 import cn.cruder.springtxinvalidation.entity.AccountInfoEntity;
 import cn.cruder.springtxinvalidation.mapper.AccountInfoMapper;
-import cn.cruder.springtxinvalidation.service.AccountInfoService01;
+import cn.cruder.springtxinvalidation.service.AccountInfoServiceA;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -23,7 +23,7 @@ class ApplicationTests {
     private AccountInfoMapper accountInfoMapper;
 
     @Autowired
-    private AccountInfoService01 accountInfoService01;
+    private AccountInfoServiceA accountInfoServiceA;
 
     @BeforeEach
     public void beforeEach() {
@@ -59,8 +59,13 @@ class ApplicationTests {
 
 
     @Test
-    void testService01() throws FileNotFoundException {
-        accountInfoService01.transfer(Constant.USER_1, Constant.USER_2, 1);
+    void testServiceATransferA() throws FileNotFoundException {
+        accountInfoServiceA.transferA(Constant.USER_1, Constant.USER_2, 100);
     }
+    @Test
+    void testServiceATransferB() throws FileNotFoundException {
+        accountInfoServiceA.transferB(Constant.USER_1, Constant.USER_2, 100);
+    }
+
 
 }

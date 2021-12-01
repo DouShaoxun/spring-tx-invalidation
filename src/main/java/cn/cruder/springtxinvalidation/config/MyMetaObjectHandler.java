@@ -20,7 +20,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        log.info("start insert fill.....");
+        log.trace("start insert fill.....");
         this.strictInsertFill(metaObject, "createTime", LocalDateTime::now, LocalDateTime.class);
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
         this.strictInsertFill(metaObject, "deleted", Integer.class, 0);
@@ -33,7 +33,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        log.info("start update fill.....");
+        log.trace("start update fill.....");
         this.setUpdateFieldValByName("updateTime", LocalDateTime.now(), metaObject);
 
     }

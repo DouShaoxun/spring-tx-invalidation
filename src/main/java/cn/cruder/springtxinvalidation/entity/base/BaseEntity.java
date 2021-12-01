@@ -38,13 +38,13 @@ public abstract class BaseEntity implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private Integer available;
 
-    @JSONField(format="yyyy-MM-dd HH:mm:ss.SSS")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss.SSS", serialize = false)
     @ApiModelProperty(value = "创建时间")
     @Column(columnDefinition = "datetime COMMENT '创建时间'")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    @JSONField(format="yyyy-MM-dd HH:mm:ss.SSS")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "修改时间")
     @Column(columnDefinition = "datetime COMMENT '修改时间'")
     @TableField(fill = FieldFill.INSERT_UPDATE)

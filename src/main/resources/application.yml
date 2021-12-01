@@ -32,4 +32,4 @@ spring:
 #  日志级别
 logging:
   level:
-    cn.cruder.springtxinvalidation: trace
+    cn.cruder.springtxinvalidation: info

@@ -12,6 +12,6 @@ public class P6spyLogger extends com.p6spy.engine.spy.appender.StdoutLogger {
     @Override
     public void logText(String text) {
         //  SQL 日志
-        log.debug(text);
+        log.info(text.replace("\n"," "));
     }
 }

@@ -5,6 +5,7 @@ import cn.cruder.springtxinvalidation.entity.AccountInfoEntity;
 import cn.cruder.springtxinvalidation.mapper.AccountInfoMapper;
 import cn.cruder.springtxinvalidation.service.AccountInfoServiceA;
 import cn.cruder.springtxinvalidation.service.AccountInfoServiceB;
+import cn.cruder.springtxinvalidation.service.AccountInfoServiceC;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -27,6 +28,10 @@ class ApplicationTests {
     private AccountInfoServiceA accountInfoServiceA;
     @Autowired
     private AccountInfoServiceB accountInfoServiceB;
+    @Autowired
+    private AccountInfoServiceC accountInfoServiceC;
+
+
     @BeforeEach
     public void beforeEach() {
         initAmountValue(Constant.USER_1);
@@ -60,19 +65,18 @@ class ApplicationTests {
     }
 
 
-
     //------------------------------------------------------------------------------------------------------------------
     @Test
     void testServiceATransferA() throws FileNotFoundException {
         // commit
         accountInfoServiceA.transferA(Constant.USER_1, Constant.USER_2, 100);
     }
+
     @Test
     void testServiceATransferB() throws FileNotFoundException {
         // rollback
         accountInfoServiceA.transferB(Constant.USER_1, Constant.USER_2, 100);
     }
-
 
 
     //------------------------------------------------------------------------------------------------------------------
@@ -82,17 +86,28 @@ class ApplicationTests {
         // commit
         accountInfoServiceB.transferA(Constant.USER_1, Constant.USER_2, 100);
     }
+
     @Test
     void testServiceBTransferB() throws FileNotFoundException {
         // rollback
         accountInfoServiceB.transferB(Constant.USER_1, Constant.USER_2, 100);
     }
+
     @Test
     void testServiceBTransferC() {
         // rollback
         accountInfoServiceB.transferC(Constant.USER_1, Constant.USER_2, 100);
     }
 
+
+    //------------------------------------------------------------------------------------------------------------------
+    @Test
+    void testServiceCTransferA() throws FileNotFoundException {
+        // AopExecutionTimeAspect 切面中提供了解决方案，但是已经注释
+        // @Pointcut("execution(* cn.cruder.springtxinvalidation.service.AccountInfoServiceC.transferA(..))")
+        // Aop的切入点包含改方法
+        accountInfoServiceC.transferA(Constant.USER_1, Constant.USER_2, 100);
+    }
 
 
 }

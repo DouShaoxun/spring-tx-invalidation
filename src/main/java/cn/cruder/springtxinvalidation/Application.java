@@ -23,7 +23,8 @@ public class Application {
      * 设置{@link AnnotationTransactionAttributeSource#publicMethodsOnly}为false
      * <br/>
      * 则非public方法也可以生效
-     *
+     * <br/>
+     * 需要设置 spring.main.allow-bean-definition-overriding=true
      * @return {@link AnnotationTransactionAttributeSource}
      */
     @Bean

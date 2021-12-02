@@ -29,7 +29,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#  日志级别
+  main:
+    allow-bean-definition-overriding: true
 logging:
   level:
     cn.cruder.springtxinvalidation: info

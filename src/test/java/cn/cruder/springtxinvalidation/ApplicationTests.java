@@ -88,7 +88,7 @@ class ApplicationTests {
         accountInfoServiceB.transferB(Constant.USER_1, Constant.USER_2, 100);
     }
     @Test
-    void testServiceBTransferC() throws FileNotFoundException {
+    void testServiceBTransferC() {
         // rollback
         accountInfoServiceB.transferC(Constant.USER_1, Constant.USER_2, 100);
     }

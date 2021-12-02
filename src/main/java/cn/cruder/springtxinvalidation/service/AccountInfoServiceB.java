@@ -78,7 +78,7 @@ public class AccountInfoServiceB {
             }
         } catch (FileNotFoundException e) {
             log.error("transferB error", e);
-            throw new FileNotFoundException();
+            throw e;
         }
     }
 
@@ -91,7 +91,7 @@ public class AccountInfoServiceB {
      * @throws FileNotFoundException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void transferC(Long from, Long to, Integer amount) throws FileNotFoundException {
+    public void transferC(Long from, Long to, Integer amount) {
         try {
             AccountInfoEntity fromEntity = accountInfoMapper.selectById(from);
             Integer entityAmount = fromEntity.getAmount();
@@ -107,7 +107,7 @@ public class AccountInfoServiceB {
             }
         } catch (FileNotFoundException e) {
             log.error("transferC error", e);
-            // 跟throw new FileNotFoundException();效果一样
+            // 跟throw e;效果一样
             TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 
         }

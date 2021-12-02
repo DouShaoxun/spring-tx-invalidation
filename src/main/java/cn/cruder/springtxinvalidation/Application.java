@@ -3,12 +3,14 @@ package cn.cruder.springtxinvalidation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.AnnotationTransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionAttributeSource;
 
 /**
  * @author dousx
  */
+@EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication
 public class Application {
 
@@ -25,6 +27,7 @@ public class Application {
      * 则非public方法也可以生效
      * <br/>
      * 需要设置 spring.main.allow-bean-definition-overriding=true
+     *
      * @return {@link AnnotationTransactionAttributeSource}
      */
     @Bean

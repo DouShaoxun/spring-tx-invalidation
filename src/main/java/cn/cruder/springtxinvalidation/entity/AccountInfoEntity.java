@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 
 /**
  * @Author: cruder
@@ -22,13 +19,10 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("account_info")
-@Entity(name = "account_info")
-@Table(appliesTo = "account_info", comment = "账户金额信息表")
 @ApiModel("账户金额信息表")
 public class AccountInfoEntity extends BaseEntity {
 
     @ApiModelProperty(value = "账户金额")
-    @Column(columnDefinition = "int(1) COMMENT '账户金额'")
     private Integer amount;
 
 }

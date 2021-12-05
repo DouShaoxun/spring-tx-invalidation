@@ -34,3 +34,5 @@ spring:
 logging:
   level:
     cn.cruder.springtxinvalidation: info
+    org.springframework.jdbc: debug
+    org.springframework.orm.jpa: debug

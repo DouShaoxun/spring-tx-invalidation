@@ -3,17 +3,17 @@ package cn.cruder.springtxinvalidation;
 import cn.cruder.springtxinvalidation.constant.Constant;
 import cn.cruder.springtxinvalidation.entity.AccountInfoEntity;
 import cn.cruder.springtxinvalidation.mapper.AccountInfoMapper;
-import cn.cruder.springtxinvalidation.service.AccountInfoServiceA;
-import cn.cruder.springtxinvalidation.service.AccountInfoServiceB;
-import cn.cruder.springtxinvalidation.service.AccountInfoServiceC;
-import cn.cruder.springtxinvalidation.service.AccountInfoServiceD;
+import cn.cruder.springtxinvalidation.service.*;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
@@ -31,18 +31,28 @@ class ApplicationTests {
     private AccountInfoServiceB accountInfoServiceB;
     @Autowired
     private AccountInfoServiceC accountInfoServiceC;
-
     @Autowired
     private AccountInfoServiceD accountInfoServiceD;
+    @Autowired
+    private AccountInfoServiceE accountInfoServiceE;
+
+    @Autowired
+    private AbstractPlatformTransactionManager abstractPlatformTransactionManager;
+
     @BeforeEach
     public void beforeEach() {
+        // 查看用的是哪一个Manager
+        log.info("TransactionManager:{}", String.valueOf(abstractPlatformTransactionManager.getClass()));
         initAmountValue(Constant.USER_1);
         initAmountValue(Constant.USER_2);
         log.info("BeforeEach Amount Info : \n{}", JSON.toJSONString(loadAmount()));
     }
 
     private void initAmountValue(Long id) {
-        AccountInfoEntity infoEntity = accountInfoMapper.selectById(id);
+        QueryWrapper<AccountInfoEntity> fromWrapper = new QueryWrapper<>();
+        fromWrapper.eq("id", id);
+        fromWrapper.last(" for update ");
+        AccountInfoEntity infoEntity = accountInfoMapper.selectOne(fromWrapper);
         if (infoEntity == null) {
             infoEntity = AccountInfoEntity.builder().amount(Constant.DEFALUT_ACCOUNT_AMOUNT).build();
             // 手动set id
@@ -115,6 +125,70 @@ class ApplicationTests {
     @Test
     void testServiceDTransferA() throws FileNotFoundException {
         accountInfoServiceD.transferA(Constant.USER_1, Constant.USER_2, 100);
+    }
+
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    @Test
+    void testServiceETransferA1() throws InterruptedException {
+        // 查看AbstractPlatformTransactionManager的实现 然后找到对应的doCommit方法 可以打断点实现，
+        // 不过org.springframework.orm.jpa.JpaTransactionManager 没复现？？？
+        // protected abstract void doCommit(DefaultTransactionStatus status) throws TransactionException;
+        int threadNumber = 10;
+        for (int i = 0; i < threadNumber; i++) {
+            new Thread(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    accountInfoServiceE.transferA(Constant.USER_1, Constant.USER_2, 500);
+                }
+            }, "n" + i).start();
+        }
+        Thread.sleep(10000);
+    }
+
+
+    @Test
+    void testServiceETransferA2() {
+        int threadNumber = 10;
+        for (int i = 0; i < threadNumber; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (accountInfoServiceE) {
+                        accountInfoServiceE.transferA(Constant.USER_1, Constant.USER_2, 1000);
+                    }
+
+                }
+            }, "n" + i).start();
+        }
+
+    }
+
+
+    @Test
+    void testServiceETransferB() {
+        int threadNumber = 10;
+        for (int i = 0; i < threadNumber; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    accountInfoServiceE.transferB(Constant.USER_1, Constant.USER_2, 100);
+                }
+            }, "n" + i).start();
+        }
+    }
+
+    @Test
+    void testServiceETransferC() throws InterruptedException {
+        int threadNumber = 10;
+
+        for (int i = 0; i < threadNumber; i++) {
+            new Thread(() -> accountInfoServiceE.transferC(Constant.USER_1, Constant.USER_2, 1000), "n" + i)
+                    .start();
+        }
+        //Thread.sleep(10000);
     }
 
 }
